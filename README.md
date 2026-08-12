@@ -23,35 +23,22 @@ This repository is the **official release hub for OneKee**, used only for:
 
 ## 📥 Get OneKee
 
-Pick the channel that matches your device. Different platforms ship through different stores — choose the one for yours.
+| Platform | Channel | Get |
+|---|---|---|
+| ✅ Browser (Chrome/Edge) | Chrome Web Store | [Install](https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob) |
+| ✅ CLI (`onekee`) | Script | `curl -fsSL https://raw.githubusercontent.com/kaich/OneKee/main/install.sh \| bash` |
+| 🚧 Android | APK · [Releases](https://github.com/kaich/OneKee/releases/latest) | Coming soon |
+| 🚧 Windows | Installer · [Releases](https://github.com/kaich/OneKee/releases/latest) | Coming soon |
+| 🚧 Linux | AppImage/deb/rpm · [Releases](https://github.com/kaich/OneKee/releases/latest) | Coming soon |
+| 🚧 macOS / iOS | App Store | Coming soon |
 
-### 🍎 macOS & iOS — App Store
+> ✅ Available · 🚧 Coming soon
 
-Coming to the App Store. The listing link will appear here once published.
+### Browser extension
 
-### 🤖 Android
+Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob). The extension connects to the OneKee desktop app via a local Native Host — no third-party servers involved.
 
-- **Play Store** — coming soon.
-- **APK direct install** — download from [Releases](https://github.com/kaich/OneKee/releases/latest) and sideload.
-
-### 🪟 Windows & 🐧 Linux — GitHub Releases
-
-Download the installer for your platform from the [Releases](https://github.com/kaich/OneKee/releases/latest) page:
-
-- **Windows**: `.exe` installer / portable `.zip`
-- **Linux**: `.AppImage` / `.deb` / `.rpm`
-
-> The first stable build for these platforms has not been published yet. Watch the Releases page for updates.
-
-### 🧩 Browser extension — Chrome Web Store
-
-Install the official Chrome extension:
-
-[**OneKee on Chrome Web Store**](https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob)
-
-The extension connects to the OneKee desktop app via a local Native Host — no third-party servers involved.
-
-### ⌨️ CLI (`onekee`) — install script
+### CLI install
 
 ```bash
 # macOS / Linux

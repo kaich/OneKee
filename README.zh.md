@@ -23,35 +23,22 @@ OneKee 是一款开源理念、本地优先、端到端加密的跨平台密码�
 
 ## 📥 获取 OneKee
 
-按你的设备选择对应渠道。各平台发布渠道不同，请选对应的入口。
+| 平台 | 渠道 | 获取 |
+|---|---|---|
+| ✅ 浏览器（Chrome/Edge） | Chrome 应用商店 | [安装](https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob) |
+| ✅ 命令行（`onekee`） | 脚本 | `curl -fsSL https://raw.githubusercontent.com/kaich/OneKee/main/install.sh \| bash` |
+| 🚧 Android | APK · [Releases](https://github.com/kaich/OneKee/releases/latest) | 即将发布 |
+| 🚧 Windows | 安装包 · [Releases](https://github.com/kaich/OneKee/releases/latest) | 即将发布 |
+| 🚧 Linux | AppImage/deb/rpm · [Releases](https://github.com/kaich/OneKee/releases/latest) | 即将发布 |
+| 🚧 macOS / iOS | App Store | 即将上架 |
 
-### 🍎 macOS 与 iOS — App Store
+> ✅ 已发布 · 🚧 即将发布
 
-即将上架 App Store，上架后这里会贴出链接。
+### 浏览器扩展
 
-### 🤖 Android
+从 [Chrome 应用商店](https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob) 安装。扩展通过本地 Native Host 连接 OneKee 桌面端，不经过任何第三方服务器。
 
-- **Play 商店** — 即将上架。
-- **APK 直接安装** — 从 [Releases](https://github.com/kaich/OneKee/releases/latest) 下载 APK 自行侧载。
-
-### 🪟 Windows 与 🐧 Linux — GitHub Releases
-
-从 [Releases](https://github.com/kaich/OneKee/releases/latest) 页面下载对应平台的安装包：
-
-- **Windows**：`.exe` 安装包 / 便携版 `.zip`
-- **Linux**：`.AppImage` / `.deb` / `.rpm`
-
-> 这些平台尚未发布首个稳定版本，请关注 Releases 页面更新。
-
-### 🧩 浏览器扩展 — Chrome 应用商店
-
-安装官方 Chrome 扩展：
-
-[**OneKee Chrome 应用商店**](https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob)
-
-扩展通过本地 Native Host 连接 OneKee 桌面端，不经过任何第三方服务器。
-
-### ⌨️ 命令行工具（`onekee`）— 脚本安装
+### 命令行工具（CLI）安装
 
 ```bash
 # macOS / Linux
