@@ -2,7 +2,7 @@
 
 > 🔒 Privacy-first, locally-stored, end-to-end encrypted cross-platform password manager.
 >
-> 🌏 简体中文：[README.zh.md](./README.zh.md)
+> 🌏 [简体中文](./README.zh.md)
 
 OneKee is a privacy-first, locally-stored, end-to-end encrypted cross-platform password manager. All data is encrypted and stored on your own device. The desktop apps, mobile clients, and CLI tool all share a single Rust core to guarantee consistent encryption and sync semantics.
 
