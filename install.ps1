@@ -1,4 +1,4 @@
-# FantasyPass CLI (`onekee`) Windows 安装脚本
+# OneKee CLI (`onekee`) Windows 安装脚本
 # Usage (PowerShell):
 #   irm https://raw.githubusercontent.com/kaich/OneKee/main/install.ps1 | iex
 
@@ -42,7 +42,7 @@ try {
 }
 
 # ---------- 安装 ----------
-$installDir = "$env:LOCALAPPDATA\Programs\FantasyPass"
+$installDir = "$env:LOCALAPPDATA\Programs\OneKee"
 if (-not (Test-Path $installDir)) {
   New-Item -ItemType Directory -Path $installDir -Force | Out-Null
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# FantasyPass CLI (`onekee`) 安装脚本
+# OneKee CLI (`onekee`) 安装脚本
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/kaich/OneKee/main/install.sh | bash
 #
@@ -85,7 +85,7 @@ download_with_fallback() {
 
 # ---------- 主流程 ----------
 main() {
-  info "FantasyPass CLI 安装脚本"
+  info "OneKee CLI 安装脚本"
 
   local platform version asset_name asset_url tmp_dir tmp_bin
   platform="$(detect_platform)"
