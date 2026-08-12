@@ -21,30 +21,37 @@ This repository is the **official release hub for OneKee**, used only for:
 - 🔌 **Browser extension** that talks to your machine only via a local Native Host for autofill
 - ⌨️ **CLI tool `onekee`** for scripting, SSH, and CI scenarios
 
-## 📥 Download
+## 📥 Get OneKee
 
-Visit the [Releases](https://github.com/kaich/OneKee/releases/latest) page and pick your platform:
+Pick the channel that matches your device. Different platforms ship through different stores — choose the one for yours.
 
-| Platform | Artifact |
-|----------|----------|
-| macOS (Apple Silicon) | `OneKee-darwin-arm64.dmg` |
-| macOS (Intel) | `OneKee-darwin-x64.dmg` |
-| Windows | `OneKee-setup.exe` / `OneKee-portable.zip` |
-| Linux | `OneKee-linux-x64.AppImage` / `.deb` / `.rpm` |
-| Android | `OneKee-android.apk` |
-| CLI | `onekee-*` per-platform binaries |
+### 🍎 macOS & iOS — App Store
 
-> Some platforms have not yet published a stable release. Watch the Releases page for updates.
+Coming to the App Store. The listing link will appear here once published.
 
-### Browser extension
+### 🤖 Android
 
-Install the official Chrome extension from the Chrome Web Store:
+- **Play Store** — coming soon.
+- **APK direct install** — download from [Releases](https://github.com/kaich/OneKee/releases/latest) and sideload.
+
+### 🪟 Windows & 🐧 Linux — GitHub Releases
+
+Download the installer for your platform from the [Releases](https://github.com/kaich/OneKee/releases/latest) page:
+
+- **Windows**: `.exe` installer / portable `.zip`
+- **Linux**: `.AppImage` / `.deb` / `.rpm`
+
+> The first stable build for these platforms has not been published yet. Watch the Releases page for updates.
+
+### 🧩 Browser extension — Chrome Web Store
+
+Install the official Chrome extension:
 
 [**OneKee on Chrome Web Store**](https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob)
 
 The extension connects to the OneKee desktop app via a local Native Host — no third-party servers involved.
 
-### CLI install
+### ⌨️ CLI (`onekee`) — install script
 
 ```bash
 # macOS / Linux
@@ -53,6 +60,8 @@ curl -fsSL https://raw.githubusercontent.com/kaich/OneKee/main/install.sh | bash
 # Windows (PowerShell)
 irm https://raw.githubusercontent.com/kaich/OneKee/main/install.ps1 | iex
 ```
+
+Per-platform binaries are also available in [Releases](https://github.com/kaich/OneKee/releases/latest).
 
 ## 🔒 Privacy Commitment
 
