@@ -25,9 +25,11 @@ This repository is the **official release hub for OneKee**, used only for:
 
 Pick the channel that matches your device. Different platforms ship through different stores — choose the one for yours.
 
-### 🍎 macOS & iOS — App Store
+### 🍎 macOS & iOS — TestFlight
 
-Coming to the App Store. The listing link will appear here once published.
+Join the beta on TestFlight (covers both macOS and iOS):
+
+[**Join OneKee on TestFlight**](https://testflight.apple.com/join/7QU6Tj9Y)
 
 ### 🤖 Android
 

@@ -25,9 +25,11 @@ OneKee 是一款开源理念、本地优先、端到端加密的跨平台密码�
 
 按你的设备选择对应渠道。各平台发布渠道不同，请选对应的入口。
 
-### 🍎 macOS 与 iOS — App Store
+### 🍎 macOS 与 iOS — TestFlight
 
-即将上架 App Store，上架后这里会贴出链接。
+通过 TestFlight 参与公测（同一链接适用于 macOS 与 iOS）：
+
+[**加入 OneKee TestFlight**](https://testflight.apple.com/join/7QU6Tj9Y)
 
 ### 🤖 Android
 
