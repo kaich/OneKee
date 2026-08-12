@@ -8,13 +8,11 @@ OneKee is a privacy-first, locally-stored, end-to-end encrypted cross-platform p
 
 ## ✨ Features
 
-| | |
-|---|---|
-| 🔐 **End-to-end encryption** | Built on the mature KeePass database format |
-| 🖥 **Cross-platform** | macOS · iOS · Android · Windows · Linux · CLI |
-| 🛰 **Local-first** | Data stays on device; optional WebDAV / iCloud / self-hosted sync |
-| 🔌 **Browser extension** | Autofill via a local Native Host — no third-party servers |
-| ⌨️ **CLI `onekee`** | Scripting, SSH, and CI password access |
+- 🔐 **End-to-end encryption** — built on the mature KeePass database format
+- 🖥 **Cross-platform** — macOS · iOS · Android · Windows · Linux · CLI
+- 🛰 **Local-first** — data stays on device; optional WebDAV / iCloud / self-hosted sync
+- 🔌 **Browser extension** — autofill via a local Native Host, no third-party servers
+- ⌨️ **CLI `onekee`** — scripting, SSH, and CI password access
 
 ## 📥 Get OneKee
 

@@ -8,13 +8,11 @@ OneKee 是一款本地优先、端到端加密的跨平台密码管家。所有�
 
 ## ✨ 特性
 
-| | |
-|---|---|
-| 🔐 **端到端加密** | 基于 KeePass 数据库格式，业界成熟加密算法 |
-| 🖥 **多端覆盖** | macOS · iOS · Android · Windows · Linux · 命令行 |
-| 🛰 **本地优先** | 数据始终在本地，可选 WebDAV / iCloud / 自建同步 |
-| 🔌 **浏览器扩展** | 通过本地 Native Host 自动填充，不经过第三方服务器 |
-| ⌨️ **CLI `onekee`** | 脚本化、SSH、CI 场景的密码访问 |
+- 🔐 **端到端加密** — 基于 KeePass 数据库格式，业界成熟加密算法
+- 🖥 **多端覆盖** — macOS · iOS · Android · Windows · Linux · 命令行
+- 🛰 **本地优先** — 数据始终在本地，可选 WebDAV / iCloud / 自建同步
+- 🔌 **浏览器扩展** — 通过本地 Native Host 自动填充，不经过第三方服务器
+- ⌨️ **CLI `onekee`** — 脚本化、SSH、CI 场景的密码访问
 
 ## 📥 获取 OneKee
 
