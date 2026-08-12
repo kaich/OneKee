@@ -62,12 +62,13 @@ Per-platform binaries are also available in [Releases](https://github.com/kaich/
 
 **OneKee collects zero user data.**
 
-| ❌ Never | ✅ Always |
-|---|---|
-| No usage analytics, telemetry, or error reporting | All password data is encrypted at rest on your device |
-| No analytics / ad / tracking SDKs | Sync is fully under your control (iCloud / WebDAV / self-hosted) |
-| No online activation (except sync, extension, and CLI connections you explicitly initiate) | The browser extension talks only to a local Native Host |
-| | Core features are fully offline-capable; disconnect anytime |
+- ❌ No usage analytics, telemetry, or error reporting
+- ❌ No analytics / ad / tracking SDKs
+- ❌ No online activation (except sync, extension, and CLI connections you explicitly initiate)
+- ✅ All password data is encrypted at rest on your device
+- ✅ Sync is fully under your control (iCloud / WebDAV / self-hosted)
+- ✅ The browser extension talks only to a local Native Host — never through third-party servers
+- ✅ Core features are fully offline-capable; disconnect anytime
 
 If you observe any unexpected network activity during packet capture, please report it in [Issues](https://github.com/kaich/OneKee/issues). Every report will be investigated and answered publicly.
 
