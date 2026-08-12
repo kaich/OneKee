@@ -36,6 +36,14 @@ OneKee 是一款开源理念、本地优先、端到端加密的跨平台密码�
 
 > 部分平台尚未发布首个稳定版本，请关注 Releases 页面更新。
 
+### 浏览器扩展
+
+从 Chrome 应用商店安装官方扩展：
+
+[**OneKee Chrome 应用商店**](https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob)
+
+扩展通过本地 Native Host 连接 OneKee 桌面端，不经过任何第三方服务器。
+
 ### 命令行工具（CLI）安装
 
 ```bash

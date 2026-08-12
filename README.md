@@ -36,6 +36,14 @@ Visit the [Releases](https://github.com/kaich/OneKee/releases/latest) page and p
 
 > Some platforms have not yet published a stable release. Watch the Releases page for updates.
 
+### Browser extension
+
+Install the official Chrome extension from the Chrome Web Store:
+
+[**OneKee on Chrome Web Store**](https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob)
+
+The extension connects to the OneKee desktop app via a local Native Host — no third-party servers involved.
+
 ### CLI install
 
 ```bash
