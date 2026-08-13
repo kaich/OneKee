@@ -44,13 +44,15 @@ The extension connects to the OneKee desktop app via a local Native Host — no 
 
 ### ⌨️ CLI `onekee`
 
+macOS / Linux
+
 ```bash
-# macOS / Linux
 curl -fsSL https://raw.githubusercontent.com/kaich/OneKee/main/install.sh | bash
 ```
 
+Windows (PowerShell)
+
 ```powershell
-# Windows (PowerShell)
 irm https://raw.githubusercontent.com/kaich/OneKee/main/install.ps1 | iex
 ```
 
