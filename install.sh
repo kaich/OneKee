@@ -51,11 +51,20 @@ detect_platform() {
 
 # ---------- 取最新版本号 ----------
 resolve_version() {
-  local api_url="https://api.github.com/repos/${OWNER}/${REPO}/releases/latest"
-  local tag
-  tag=$(curl -fsSL "$api_url" 2>/dev/null | grep -m1 '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/' || true)
+  local releases_url="https://github.com/${OWNER}/${REPO}/releases"
+  local tag="" redirect_url
+
+  redirect_url=$(curl -fsSL -o /dev/null -w '%{url_effective}' "${releases_url}/latest" 2>/dev/null || true)
+  case "$redirect_url" in
+    "${releases_url}/tag/"*)
+      tag="${redirect_url#"${releases_url}/tag/"}"
+      tag="${tag%%\?*}"
+      tag="${tag%%\#*}"
+      ;;
+  esac
+
   if [[ -z "$tag" ]]; then
-    error "无法解析最新版本号，请检查网络或手动指定版本"
+    error "无法从 GitHub Releases 解析最新版本，请稍后重试"
     exit 1
   fi
   echo "$tag"
