@@ -44,13 +44,15 @@ OneKee 是一款本地优先、端到端加密的跨平台密码管家。所有�
 
 ### ⌨️ CLI `onekee`
 
+macOS / Linux
+
 ```bash
-# macOS / Linux
 curl -fsSL https://raw.githubusercontent.com/kaich/OneKee/main/install.sh | bash
 ```
 
+Windows（PowerShell）
+
 ```powershell
-# Windows (PowerShell)
 irm https://raw.githubusercontent.com/kaich/OneKee/main/install.ps1 | iex
 ```
 
