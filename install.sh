@@ -7,15 +7,17 @@
 #   1. 自动识别平台 (macOS / Linux) 与架构 (arm64 / x64)
 #   2. 从 GitHub Release 拉取对应二进制（多代理 fallback，国内可加速）
 #   3. 校验 SHA256（如 Release 提供 SHA256SUMS）
-#   4. 安装到 /usr/local/bin/onekee（需要 sudo）或 ~/.local/bin/onekee
+#   4. 安装到 ~/.local/bin/onekee（无需 sudo）
 
 set -euo pipefail
 
 OWNER="kaich"
 REPO="OneKee"
 BINARY_NAME="onekee"
-INSTALL_DIR_GLOBAL="/usr/local/bin"
 INSTALL_DIR_USER="${HOME}/.local/bin"
+LEGACY_INSTALL_PATH="/usr/local/bin/${BINARY_NAME}"
+ONEKEE_INSTALL_TMP_DIR=""
+ONEKEE_INSTALL_TMP_BIN=""
 
 # ---------- 颜色 ----------
 if [[ -t 1 ]]; then
@@ -27,6 +29,38 @@ fi
 info()  { printf "${CYAN}[info]${NC} %s\n" "$*"; }
 warn()  { printf "${YELLOW}[warn]${NC} %s\n" "$*"; }
 error() { printf "${RED}[error]${NC} %s\n" "$*" >&2; }
+
+# ---------- 安全清理 ----------
+cleanup_install_tmp() {
+  local tmp_dir="${ONEKEE_INSTALL_TMP_DIR:-}"
+  local tmp_bin="${ONEKEE_INSTALL_TMP_BIN:-}"
+
+  [[ -n "$tmp_dir" ]] || return 0
+
+  case "$tmp_dir" in
+    */onekee-install.*) ;;
+    *)
+      warn "临时目录路径异常，跳过清理: $tmp_dir"
+      return 0
+      ;;
+  esac
+
+  if [[ "$tmp_bin" != "${tmp_dir}/${BINARY_NAME}" ]]; then
+    warn "临时文件路径异常，跳过清理: $tmp_bin"
+    return 0
+  fi
+
+  if [[ -e "$tmp_bin" || -L "$tmp_bin" ]]; then
+    if ! rm -f -- "$tmp_bin"; then
+      warn "无法清理临时文件，已保留: $tmp_bin"
+      return 0
+    fi
+  fi
+
+  if [[ -d "$tmp_dir" ]] && ! rmdir -- "$tmp_dir" 2>/dev/null; then
+    warn "临时目录非空，已保留以避免误删: $tmp_dir"
+  fi
+}
 
 # ---------- 平台识别 ----------
 detect_platform() {
@@ -96,7 +130,7 @@ download_with_fallback() {
 main() {
   info "OneKee CLI 安装脚本"
 
-  local platform version asset_name asset_url tmp_dir tmp_bin
+  local platform version asset_name asset_url installed_path resolved_command tmp_base tmp_template
   platform="$(detect_platform)"
   info "检测到平台: $platform"
 
@@ -106,45 +140,48 @@ main() {
   asset_name="${BINARY_NAME}-${platform}"
   asset_url="https://github.com/${OWNER}/${REPO}/releases/download/${version}/${asset_name}"
 
-  tmp_dir="$(mktemp -d)"
-  tmp_bin="${tmp_dir}/${BINARY_NAME}"
-  trap 'rm -rf "$tmp_dir"' EXIT
+  tmp_base="${TMPDIR:-/tmp}"
+  tmp_base="${tmp_base%/}"
+  if [[ -n "$tmp_base" ]]; then
+    tmp_template="${tmp_base}/onekee-install.XXXXXX"
+  else
+    tmp_template="/onekee-install.XXXXXX"
+  fi
+  ONEKEE_INSTALL_TMP_DIR="$(mktemp -d "$tmp_template")"
+  ONEKEE_INSTALL_TMP_BIN="${ONEKEE_INSTALL_TMP_DIR}/${BINARY_NAME}"
+  trap cleanup_install_tmp EXIT
 
-  if ! download_with_fallback "$asset_url" "$tmp_bin"; then
+  if ! download_with_fallback "$asset_url" "$ONEKEE_INSTALL_TMP_BIN"; then
     error "所有下载源均失败，请检查网络后重试"
     exit 1
   fi
 
-  chmod +x "$tmp_bin"
-
-  # 选择安装目录
-  local install_dir
-  if [[ -w "$INSTALL_DIR_GLOBAL" ]]; then
-    install_dir="$INSTALL_DIR_GLOBAL"
-  elif command -v sudo >/dev/null 2>&1; then
-    info "需要 sudo 写入 ${INSTALL_DIR_GLOBAL}"
-    sudo mv "$tmp_bin" "${INSTALL_DIR_GLOBAL}/${BINARY_NAME}"
-    install_dir="$INSTALL_DIR_GLOBAL"
-  else
-    install_dir="$INSTALL_DIR_USER"
-    mkdir -p "$install_dir"
-    mv "$tmp_bin" "${install_dir}/${BINARY_NAME}"
-    warn "已安装到 ${install_dir}，请确认该目录在 PATH 中"
-    warn "可添加到 shell 配置: export PATH=\"${install_dir}:\$PATH\""
+  chmod +x "$ONEKEE_INSTALL_TMP_BIN"
+  mkdir -p "$INSTALL_DIR_USER"
+  installed_path="${INSTALL_DIR_USER}/${BINARY_NAME}"
+  if [[ -d "$installed_path" ]]; then
+    error "安装目标是目录，无法覆盖: $installed_path"
+    exit 1
   fi
-
-  if [[ "$install_dir" == "$INSTALL_DIR_GLOBAL" ]]; then
-    # sudo 路径已在上面 mv 过；非 sudo 路径在此 mv
-    [[ ! -e "${INSTALL_DIR_GLOBAL}/${BINARY_NAME}" ]] && mv "$tmp_bin" "${INSTALL_DIR_GLOBAL}/${BINARY_NAME}" || true
-  fi
-
-  local installed_path="${install_dir}/${BINARY_NAME}"
+  mv "$ONEKEE_INSTALL_TMP_BIN" "$installed_path"
   info "✅ 安装完成: ${installed_path}"
 
-  if command -v "${BINARY_NAME}" >/dev/null 2>&1; then
-    "${BINARY_NAME}" --help 2>/dev/null | head -1 || true
-  else
-    info "重新打开终端，或运行: source ~/.zshrc  # (bash 用户: ~/.bashrc)"
+  "$installed_path" --help 2>/dev/null | head -1 || true
+
+  case ":${PATH:-}:" in
+    *":${INSTALL_DIR_USER}:"*) ;;
+    *)
+      warn "${INSTALL_DIR_USER} 尚未加入 PATH"
+      warn "请添加到 shell 配置: export PATH=\"${INSTALL_DIR_USER}:\$PATH\""
+      ;;
+  esac
+
+  if [[ -e "$LEGACY_INSTALL_PATH" || -L "$LEGACY_INSTALL_PATH" ]]; then
+    warn "检测到旧的全局安装（未修改）: ${LEGACY_INSTALL_PATH}"
+    resolved_command="$(command -v "$BINARY_NAME" 2>/dev/null || true)"
+    if [[ -n "$resolved_command" && "$resolved_command" != "$installed_path" ]]; then
+      warn "当前 PATH 可能仍优先使用: ${resolved_command}"
+    fi
   fi
 }
 
