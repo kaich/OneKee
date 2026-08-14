@@ -183,6 +183,21 @@ main() {
       warn "当前 PATH 可能仍优先使用: ${resolved_command}"
     fi
   fi
+
+  # 自动注册 Chrome native messaging host（release 版自带商店扩展 id，零配置）。
+  # onekee connect chrome 建 fantasypass-native-host 符号链接 + 写 NMH json，
+  # 用户装完即用，无需手动配置。设 ONEKEE_SKIP_CHROME_CONNECT=1 可跳过。
+  if [[ -n "${ONEKEE_SKIP_CHROME_CONNECT:-}" ]]; then
+    info "已跳过 Chrome NMH 注册（ONEKEE_SKIP_CHROME_CONNECT 已设置）"
+  else
+    info "注册 Chrome native messaging host..."
+    if "$installed_path" connect chrome >/tmp/onekee-chrome-connect.log 2>&1; then
+      info "✅ Chrome NMH 已注册（重启 Chrome 后 OneKee 扩展可连接桌面 app）"
+    else
+      warn "Chrome NMH 自动注册失败，可稍后手动运行: $installed_path connect chrome"
+      sed 's/^/    /' /tmp/onekee-chrome-connect.log 2>/dev/null | head -5
+    fi
+  fi
 }
 
 main "$@"

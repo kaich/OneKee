@@ -58,6 +58,21 @@ if ($userPath -notlike "*$installDir*") {
 }
 
 Write-Info "✅ 安装完成: $dest"
+
+# 自动注册 Chrome native messaging host（release 版自带商店扩展 id，零配置）。
+# onekee connect chrome 复制 fantasypass-native-host.exe + 写 NMH json + 写注册表（HKCU，无需管理员）。
+if ($env:ONEKEE_SKIP_CHROME_CONNECT) {
+  Write-Info "已跳过 Chrome NMH 注册（ONEKEE_SKIP_CHROME_CONNECT 已设置）"
+} else {
+  Write-Info "注册 Chrome native messaging host..."
+  try {
+    & $dest connect chrome | Out-Null
+    Write-Info "✅ Chrome NMH 已注册（重启 Chrome 后 OneKee 扩展可连接桌面 app）"
+  } catch {
+    Write-Warn "Chrome NMH 自动注册失败，可稍后手动运行: $dest connect chrome"
+  }
+}
+
 Write-Host ''
 Write-Host '请重新打开 PowerShell / 终端使 PATH 生效，然后运行:'
 Write-Host "  $BinaryName --help" -ForegroundColor Green
