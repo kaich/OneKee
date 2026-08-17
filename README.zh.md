@@ -58,6 +58,18 @@ irm https://raw.githubusercontent.com/kaich/OneKee/main/install.ps1 | iex
 
 各平台二进制也可从 [Releases](https://github.com/kaich/OneKee/releases/latest) 直接下载。
 
+### 🤖 AI 助手 Skill（Claude Code / Codex）
+
+让你的 AI 编程助手学会通过 `onekee` 查询你的密码库。一行安装（不传 `--claude` / `--codex` 不会安装任何东西）：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kaich/OneKee/main/install-skill.sh | bash -s -- --claude
+```
+
+装好之后，直接对助手说「查一下我的 GitHub 密码」，它会替你执行 `onekee resolve` / `onekee get-secret`。
+
+> 浏览器自动填充需要**桌面端 App + Chrome 扩展 + CLI 三者都安装**才能工作，缺一不可。
+
 ## 🔒 隐私承诺
 
 **OneKee 不收集任何用户信息。**

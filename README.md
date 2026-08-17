@@ -58,6 +58,18 @@ irm https://raw.githubusercontent.com/kaich/OneKee/main/install.ps1 | iex
 
 Per-platform binaries are also available in [Releases](https://github.com/kaich/OneKee/releases/latest).
 
+### 🤖 AI assistant skill (Claude Code / Codex)
+
+Teach your AI coding assistant to query your vault via `onekee`. One-line install (nothing is installed unless you explicitly pass `--claude` / `--codex`):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kaich/OneKee/main/install-skill.sh | bash -s -- --claude
+```
+
+After installing, ask your assistant things like "look up my GitHub password" — it will run `onekee resolve` / `onekee get-secret` for you.
+
+> Browser autofill requires **the desktop app + Chrome extension + CLI, all three installed** — any missing piece and autofill won't work.
+
 ## 🔒 Privacy Commitment
 
 **OneKee collects zero user data.**
