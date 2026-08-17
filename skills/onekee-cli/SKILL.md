@@ -78,14 +78,13 @@ onekee open-url --entry-id <id> --access-key <key>
 
 ## AccessKey 从哪来
 
-AccessKey 在 **OneKee 桌面端 App 内生成**（设置中查看）。如果用户不知道 AccessKey：
+AccessKey 在 **OneKee 桌面端 App 内生成**（设置 → 密钥管理 → 创建 Access Key）。如果用户不知道 AccessKey：
 
 1. 让用户打开 OneKee 桌面端
-2. 在设置里找到 Access Key
-3. 建议用户通过环境变量提供，避免明文留在会话记录里：
-   ```bash
-   export ONEKEE_ACCESS_KEY=<key>   # 用户自己执行
-   ```
+2. 进入「设置 → 密钥管理」，点击「创建 Access Key」
+3. 让用户把 Access Key 提供给你，查询命令通过 `--access-key <key>` 参数传入
+
+> 除 `discover` / `pair` 外，所有查询命令都必须带 `--access-key` 参数；CLI 不支持环境变量等其他传入方式。
 
 **不要把 AccessKey 写进任何文件、提交或日志。**
 
