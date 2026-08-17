@@ -20,10 +20,10 @@
 *.tar.gz
 *.tgz
 
-# CLI 二进制（按命名约定）
-onekee
-onekee-*
-onekee.exe
+# CLI 二进制（按命名约定，锚定根目录，避免误伤 skills/onekee-cli）
+/onekee
+/onekee-*
+/onekee.exe
 
 # 校验文件（随 Release 上传，不进仓库）
 SHA256SUMS
