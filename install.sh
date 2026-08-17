@@ -185,7 +185,7 @@ main() {
   fi
 
   # 自动注册 Chrome native messaging host（release 版自带商店扩展 id，零配置）。
-  # onekee connect chrome 建 fantasypass-native-host 符号链接 + 写 NMH json，
+  # onekee connect chrome 建 native host 符号链接 + 写 NMH json，
   # 用户装完即用，无需手动配置。设 ONEKEE_SKIP_CHROME_CONNECT=1 可跳过。
   if [[ -n "${ONEKEE_SKIP_CHROME_CONNECT:-}" ]]; then
     info "已跳过 Chrome NMH 注册（ONEKEE_SKIP_CHROME_CONNECT 已设置）"

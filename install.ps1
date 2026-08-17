@@ -60,7 +60,7 @@ if ($userPath -notlike "*$installDir*") {
 Write-Info "✅ 安装完成: $dest"
 
 # 自动注册 Chrome native messaging host（release 版自带商店扩展 id，零配置）。
-# onekee connect chrome 复制 fantasypass-native-host.exe + 写 NMH json + 写注册表（HKCU，无需管理员）。
+# onekee connect chrome 复制 native host 可执行文件 + 写 NMH json + 写注册表（HKCU，无需管理员）。
 if ($env:ONEKEE_SKIP_CHROME_CONNECT) {
   Write-Info "已跳过 Chrome NMH 注册（ONEKEE_SKIP_CHROME_CONNECT 已设置）"
 } else {
