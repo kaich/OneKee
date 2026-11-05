@@ -9,7 +9,7 @@ description: 通过 OneKee CLI（onekee 命令）为用户查询和填充密码�
 
 本 skill 依赖 OneKee 三件套协同工作：
 
-1. **OneKee 桌面端 App** — 密码库本体与本地 Broker，必须处于**已解锁运行**状态
+1. **OneKee 桌面端 App** — 密码库本体与本地 Broker，必须保持运行；关联数据库需已解锁，或其 Access Key 已开启**自动解锁数据库**（支持该功能的 Mac 版本）
 2. **OneKee Chrome 扩展** — 浏览器自动填充入口：
    https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob
 3. **onekee CLI** — 命令行访问入口
@@ -38,7 +38,7 @@ onekee discover
 ```
 
 - 有输出（endpoint 列表）→ 桌面端 Broker 在线，继续
-- 无输出 → 提示用户：**先启动并解锁 OneKee 桌面端 App**
+- 无输出 → 提示用户：**先启动 OneKee 桌面端 App 并检查服务状态**
 
 ### 2. 搜索条目
 
@@ -82,7 +82,10 @@ AccessKey 在 **OneKee 桌面端 App 内生成**（设置 → 密钥管理 → �
 
 1. 让用户打开 OneKee 桌面端
 2. 进入「设置 → 密钥管理」，点击「创建 Access Key」
-3. 让用户把 Access Key 提供给你，查询命令通过 `--access-key <key>` 参数传入
+3. 关联一个数据库并选择允许访问的条目；Mac 无人值守访问需在 Key 详情开启「自动解锁数据库」
+4. 让用户把 Access Key 提供给你，查询命令通过 `--access-key <key>` 参数传入
+
+Mac 后台自动解锁不会解锁主界面；CLI 只读取该 Key 授权的条目。不要向用户索取数据库主密码来替代 Access Key。移动端仍需手动解锁。
 
 > 除 `discover` / `pair` 外，所有查询命令都必须带 `--access-key` 参数；CLI 不支持环境变量等其他传入方式。
 
@@ -115,8 +118,11 @@ onekee connect chrome
 | 报错关键词 | 含义 | 处理 |
 |---|---|---|
 | `missing required flag --access-key` | 没带 AccessKey | 引导用户从桌面端获取 |
-| `failed to connect broker` / ConnectFailed | 桌面端没开或没解锁 | 让用户启动并解锁桌面端 |
-| `LOCKED` / `locked` | 密码库锁定中 | 让用户在桌面端解锁 |
+| `failed to connect broker` / ConnectFailed | 桌面端或 Broker 未运行 | 让用户启动桌面端并检查服务 |
+| `DATABASE_LOCKED` / `LOCKED` / `locked` | 关联库已锁定，未允许后台解锁 | 让用户手动解锁，或在 Mac 的 Key 详情开启自动解锁 |
+| `DATABASE_NOT_BOUND` | Key 尚未绑定数据库 | 让用户在 Key 详情关联数据库并选择授权条目 |
+| `AUTO_UNLOCK_FAILED` | 保存的凭据无法解锁数据库 | 让用户手动解锁后重新关闭并开启该 Key 的自动解锁 |
+| `DATABASE_UNAVAILABLE` / `DATABASE_CHANGED` | 文件暂不可访问或读取期间发生变化 | 检查文件授权后重试；不要改用其他库或越过授权 |
 | `NOT_FOUND` | 条目不存在 | 换关键词重新 resolve |
 | LAN 场景提示「应用并重启 Broker」 | 远程 Broker 需重启 | 让用户在桌面端点「应用并重启 Broker」 |
 
