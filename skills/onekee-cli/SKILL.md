@@ -9,7 +9,7 @@ description: 通过 OneKee CLI（onekee 命令）为用户查询和填充密码�
 
 本 skill 依赖 OneKee 三件套协同工作：
 
-1. **OneKee 桌面端 App** — 密码库本体与本地 Broker，必须保持运行；关联数据库需已解锁，或其 Access Key 已开启**自动解锁数据库**（支持该功能的 Mac 版本）
+1. **OneKee 桌面端 App** — 密码库本体与本地 Broker，必须保持运行；关联数据库需已解锁，或其 Access Key 已开启**自动解锁数据库**（支持该功能的桌面版本）
 2. **OneKee Chrome 扩展** — 浏览器自动填充入口：
    https://chromewebstore.google.com/detail/onekee/hdniebnhlafllklljcaehhoopdaahpob
 3. **onekee CLI** — 命令行访问入口
@@ -76,16 +76,26 @@ onekee get-secret --entry-id <id> --fields username,password --access-key <key>
 onekee open-url --entry-id <id> --access-key <key>
 ```
 
+## 后台解锁与等待时间
+
+首次后台解锁可能比读取已缓存会话慢。CLI 默认等待 60 秒，可为慢库显式设置 `--timeout <秒数>`（1–3600）：
+
+```bash
+onekee resolve --query github --access-key <key> --timeout 120
+```
+
+连接与 TLS 握手分别有较短的等待上限；延长读取等待不会绕过连接、身份或条目权限检查。超时后先检查设备与数据库状态，再重新发起操作。
+
 ## AccessKey 从哪来
 
 AccessKey 在 **OneKee 桌面端 App 内生成**（设置 → 密钥管理 → 创建 Access Key）。如果用户不知道 AccessKey：
 
 1. 让用户打开 OneKee 桌面端
 2. 进入「设置 → 密钥管理」，点击「创建 Access Key」
-3. 关联一个数据库并选择允许访问的条目；Mac 无人值守访问需在 Key 详情开启「自动解锁数据库」
+3. 关联一个数据库并选择允许访问的条目；桌面端无人值守访问需在 Key 详情开启「自动解锁数据库」
 4. 让用户把 Access Key 提供给你，查询命令通过 `--access-key <key>` 参数传入
 
-Mac 后台自动解锁不会解锁主界面；CLI 只读取该 Key 授权的条目。不要向用户索取数据库主密码来替代 Access Key。移动端仍需手动解锁。
+桌面端后台自动解锁不会解锁主界面；CLI 只读取该 Key 授权的条目。不要向用户索取数据库主密码来替代 Access Key。移动端仍需手动解锁。
 
 > 除 `discover` / `pair` 外，所有查询命令都必须带 `--access-key` 参数；CLI 不支持环境变量等其他传入方式。
 
@@ -99,7 +109,22 @@ CLI 第一次使用时需要跟桌面端配对：
 onekee pair
 ```
 
-流程：CLI 发起 → 用户在**桌面端「设置 > 设备管理」**查看 6 位配对码 → 按提示输入 → 完成。已受信设备重复配对会自动跳过。
+首次局域网配对：CLI 发起 → 用户在 **OneKee「设置 > 设备管理」**复制完整的 SHA-256 服务端指纹 → 按 CLI 提示输入指纹 → 输入同页的 6 位配对码 → 完成。只使用主程序显示的指纹，不把网络发现结果或 CLI 自己显示的未知指纹当成信任依据。配对成功后 CLI 会固定服务端身份，后续局域网连接使用 TLS 加密并验证该身份。
+
+指定局域网设备：
+
+```bash
+onekee pair --endpoint tcp://host:52145
+```
+
+分步配对时必须保留 `pair-start` 返回的会话 ID：
+
+```bash
+onekee pair-start --client-label <设备名> --endpoint tcp://host:52145
+onekee pair-confirm --session-id <会话ID> --pair-code <6位码> --server-fingerprint <主程序显示的完整指纹> --endpoint tcp://host:52145
+```
+
+访客配对可在 `pair-confirm` 加 `--guest --guest-ttl <秒数>`。`--server-fingerprint` 接受完整 64 位十六进制 SHA-256，可包含冒号或空格；必须从主程序获取。本机 socket 使用操作系统访问权限；局域网身份未知或发生变化时不能读取凭据，不能通过跳过校验或改用明文连接绕过。重新配对前先让用户核对主程序身份。移动端必须由用户手动解锁关联数据库。
 
 ## 浏览器填充设置（通常已自动完成）
 
@@ -119,12 +144,14 @@ onekee connect chrome
 |---|---|---|
 | `missing required flag --access-key` | 没带 AccessKey | 引导用户从桌面端获取 |
 | `failed to connect broker` / ConnectFailed | 桌面端或 Broker 未运行 | 让用户启动桌面端并检查服务 |
-| `DATABASE_LOCKED` / `LOCKED` / `locked` | 关联库已锁定，未允许后台解锁 | 让用户手动解锁，或在 Mac 的 Key 详情开启自动解锁 |
+| `DATABASE_LOCKED` / `LOCKED` / `locked` | 关联库已锁定，未允许后台解锁 | 让用户手动解锁，或在支持的桌面端 Key 详情开启自动解锁 |
 | `DATABASE_NOT_BOUND` | Key 尚未绑定数据库 | 让用户在 Key 详情关联数据库并选择授权条目 |
 | `AUTO_UNLOCK_FAILED` | 保存的凭据无法解锁数据库 | 让用户手动解锁后重新关闭并开启该 Key 的自动解锁 |
 | `DATABASE_UNAVAILABLE` / `DATABASE_CHANGED` | 文件暂不可访问或读取期间发生变化 | 检查文件授权后重试；不要改用其他库或越过授权 |
 | `NOT_FOUND` | 条目不存在 | 换关键词重新 resolve |
-| LAN 场景提示「应用并重启 Broker」 | 远程 Broker 需重启 | 让用户在桌面端点「应用并重启 Broker」 |
+| 服务端身份未知或指纹不匹配 | 尚未配对，或服务端身份发生变化 | 请用户从主程序核对完整指纹并重新配对；不要静默接受新身份 |
+| 请求超时 | 连接或后台解锁未在等待时间内完成 | 检查设备在线及关联库状态后重试；不要改读其他数据库 |
+| `REPLAY_DETECTED` | 请求被重复发送 | 重新发起操作生成新请求，不能重复使用旧签名 |
 
 ## 安全红线
 
