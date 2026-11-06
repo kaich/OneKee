@@ -86,6 +86,16 @@ onekee resolve --query github --access-key <key> --timeout 120
 
 连接与 TLS 握手分别有较短的等待上限；延长读取等待不会绕过连接、身份或条目权限检查。超时后先检查设备与数据库状态，再重新发起操作。
 
+## 协议版本检查
+
+CLI 在发送 AccessKey 前会在同一连接内协商协议版本；本机 socket 和局域网 TLS 都会检查。软件版本不必完全相同，只要双方支持的协议范围有交集即可。
+
+- `CLI_UPDATE_REQUIRED`：更新 CLI。
+- `APP_UPDATE_REQUIRED`：更新作为密码库 host 的 OneKee 客户端。
+- `PROTOCOL_NEGOTIATION_FAILED`：对端不支持握手、响应异常或连接中断；检查服务状态及双方版本，不能据此确定哪一端过旧。
+
+这些错误不会继续发送 AccessKey。不要跳过协议或服务端身份校验，也不要尝试使用旧版明文连接。
+
 ## AccessKey 从哪来
 
 AccessKey 在 **OneKee 桌面端 App 内生成**（设置 → 密钥管理 → 创建 Access Key）。如果用户不知道 AccessKey：
@@ -151,6 +161,9 @@ onekee connect chrome
 | `NOT_FOUND` | 条目不存在 | 换关键词重新 resolve |
 | 服务端身份未知或指纹不匹配 | 尚未配对，或服务端身份发生变化 | 请用户从主程序核对完整指纹并重新配对；不要静默接受新身份 |
 | 请求超时 | 连接或后台解锁未在等待时间内完成 | 检查设备在线及关联库状态后重试；不要改读其他数据库 |
+| `CLI_UPDATE_REQUIRED` | CLI 协议过旧 | 更新 CLI，再重试 |
+| `APP_UPDATE_REQUIRED` | host 协议过旧 | 更新 OneKee 客户端，再重试 |
+| `PROTOCOL_NEGOTIATION_FAILED` | 无法确认协议兼容性 | 检查连接和双方版本；不要绕过握手 |
 | `REPLAY_DETECTED` | 请求被重复发送 | 重新发起操作生成新请求，不能重复使用旧签名 |
 
 ## 安全红线
