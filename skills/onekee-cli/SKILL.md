@@ -146,7 +146,7 @@ onekee pair-confirm --session-id <会话ID> --pair-code <6位码> --server-finge
 onekee connect chrome
 ```
 
-前提同样是：桌面端 + 扩展 + CLI 三件套齐全。
+前提同样是：桌面端 + 扩展 + CLI 三件套齐全。浏览器填充使用本机连接，不需要 CLI 配对码；`onekee connect chrome` 注册浏览器 Native Host 入口。远程 CLI 访问仍按前文完成配对。
 
 ## 错误处理对照
 
